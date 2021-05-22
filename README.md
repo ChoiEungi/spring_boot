@@ -88,6 +88,64 @@ public void beforeEach() { //각 테스트 실행 전에 호출
 
 
 
-### DI
+### DI, 스프링과 빈
 
-정리할 것.
+- **new(여러 인스턴스)를 사용하지 않고 하나의 객체를 여러 클래스에서 사용할 수 있도록 의존관계를 설정해야한다.**
+
+**Bean 등록법**
+
+- 대부분 싱글톤으로 등록(유일하게 하나만 등록해서 공유)
+
+1. 컴포넌트 스캔과 자동 의존관계 설정 -> `@Autowired` 사용 
+
+   - HelloSpringApplication의 패키지 이외에는 빈을 등록하지 않는다. (component scan)
+
+2. 자바 코드로 직접 스프링 빈 등록
+
+   ```java
+   // MemberService와 MemberRepository의 @Service, @Repository, @Autowired annotation을 제거
+   @Configuration
+   public class SpringConfig {
+   
+       @Bean
+       public MemberService memberService(){
+           return new MemberService(memberRepository());
+       }
+   
+       @Bean
+       public MemberRepository memberRepository() {
+           return new MemoryMemberRepository();
+       }
+   
+   
+   }
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 용어 정리
+
+### 스프링 컨테이너 
+
+스프링의 빈을 생성하고 관리하는 컨테이너를 가지고 있다. 이를 통해서 스프링의 주개념인 IOC 나 AOP에 대해서 관리하곤 한다.
+
+
+
+### IOC
+
+- Spring에서 사용되는 IoC란 객체가 내부적으로 조작할 객체를 직접 생성하지 않고 외부로부터 주입받는 기법을 의미한다. 이때 객체를 외부로부터 주입해주는 작업을 DI(의존성 주입)이라고 부른다.
+
+- IoC Container는 오브젝트의 생성과 관계설정, 사용, 제거 등의 작업을 대신 해준다하여 붙여진 이름이다. 이때, IoC Container에 의해 관리되는 오브젝트들은 Bean 이라고 부른다. IoC Container는 Bean을 저장한다고 하여, BeanFactory 라고도 불린다.
+
+-  BeanFactory는 하나의 인터페이스이며, Application Context는 BeanFactory의 구현체를 상속받고 있는 인터페이스이다. 실제로 스프링에서 IoC Container 라고 불리는 것은 Application Context의 구현체이다.
+
