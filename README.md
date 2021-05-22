@@ -122,7 +122,9 @@ public void beforeEach() { //각 테스트 실행 전에 호출
    }
    ```
 
+### 웹 MVC
 
+컨트롤러가 정적 파일보다 우선순위가 높다. -> home에서 GetMapping("/")로 된 home.html이 index.html보다 우선순위가 높다
 
 
 
@@ -140,7 +142,7 @@ public void beforeEach() { //각 테스트 실행 전에 호출
 
 스프링의 빈을 생성하고 관리하는 컨테이너를 가지고 있다. 이를 통해서 스프링의 주개념인 IOC 나 AOP에 대해서 관리하곤 한다.
 
-
+alt + insert: getter and setter
 
 ### IOC
 
