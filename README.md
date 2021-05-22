@@ -124,9 +124,44 @@ public void beforeEach() { //각 테스트 실행 전에 호출
 
 ### 웹 MVC
 
-컨트롤러가 정적 파일보다 우선순위가 높다. -> home에서 GetMapping("/")로 된 home.html이 index.html보다 우선순위가 높다
+컨트롤러가 정적 파일보다 우선순위가 높다. -> home에서 GetMapping("/")로 된 home.html이 index.html보다 우선순위가 높다.
+
+**Form Controller**
+
+```java
+package hello.hellospring.controller;
+
+public class MemberForm {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+- post시 postmapping이 호출된다. html에서 name에 해당하는 부분의 정보를 받게됨.
+
+```java
+@PostMapping("/members/new") //method ="post"에 상응돼 post시 호출
+public String create(MemberForm form){
+    Member member = new Member();
+    member.setName(form.getName());
+
+    //System.out.println("member"+member.getName());
+    memberService.join(member);
+
+    return "redirect:/";
+}
+```
 
 
+
+- member라는 domain에서 setter로 private값인 name으로 설정. 이후 join method를 이용해 db에 저장 
 
 
 
@@ -147,8 +182,20 @@ alt + insert: getter and setter
 ### IOC
 
 - Spring에서 사용되는 IoC란 객체가 내부적으로 조작할 객체를 직접 생성하지 않고 외부로부터 주입받는 기법을 의미한다. 이때 객체를 외부로부터 주입해주는 작업을 DI(의존성 주입)이라고 부른다.
-
 - IoC Container는 오브젝트의 생성과 관계설정, 사용, 제거 등의 작업을 대신 해준다하여 붙여진 이름이다. 이때, IoC Container에 의해 관리되는 오브젝트들은 Bean 이라고 부른다. IoC Container는 Bean을 저장한다고 하여, BeanFactory 라고도 불린다.
-
 -  BeanFactory는 하나의 인터페이스이며, Application Context는 BeanFactory의 구현체를 상속받고 있는 인터페이스이다. 실제로 스프링에서 IoC Container 라고 불리는 것은 Application Context의 구현체이다.
 
+
+
+### Model
+
+- Spring에서는 직접 모델을 생성하지 않고 파라미터로 선언만 해주면 된다. 이후 `addAttribute("attriubtename", object)`를 해줘 orm을 사용 
+- 
+
+
+
+
+
+## Reference
+
+https://velog.io/@msriver/Spring-Model-%EA%B0%9D%EC%B2%B4
