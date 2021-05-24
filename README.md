@@ -165,9 +165,59 @@ public String create(MemberForm form){
 
 
 
+### DB
+
+`@SpringBootTest `: 스프링 컨테이너와 테스트를 함께 실행한다.
+`@Transactional `: 테스트 케이스에 이 애노테이션이 있으면, 테스트 시작 전에 트랜잭션을 시작하고,
+테스트 완료 후에 항상 롤백한다. 이렇게 하면 DB에 데이터가 남지 않으므로 다음 테스트에 영향을 주지
+않는다.
+
+JDBC Template 메뉴얼을 통해 사용법 확인 가능.
+
+### JPA
+
+`show-sql` : JPA가 생성하는 SQL을 출력한다.
+`ddl-auto `: JPA는 테이블을 자동으로 생성하는 기능을 제공하는데 none 를 사용하면 해당 기능을 끈다.
+`create` 를 사용하면 엔티티 정보를 바탕으로 테이블도 직접 생성해준다. 
 
 
 
+### AOP
+
+Problem: 모든 메소드의 호출 시간을 측정하고 싶다면?
+
+공통 관심 사항(cross-cutting concern) vs 핵심 관심 사항(core concern) 분리
+
+build에서 `implementation 'org.springframework.boot:spring-boot-starter-aop'` 사용해야함 
+
+```java
+package hello.hellospring.aop;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+// bean에 등록
+@Aspect
+@Component
+public class TimeTraceAop {
+
+    @Around("execution(* hello.hellospring..*(..))") //원하는 적용 대상을 선택할 수 있다.
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        System.out.println("START: " + joinPoint.toString());
+        try {
+            return joinPoint.proceed();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("END: " + joinPoint.toString()+ " " + timeMs +
+                    "ms");
+        }
+    }
+}
+```
 
 
 
